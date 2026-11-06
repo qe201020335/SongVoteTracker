@@ -1,0 +1,21 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/bsmg/BSIPA-MetadataFileSchema/master/Schema.json",
+  "id": "SongVoteTracker",
+  "name": "SongVoteTracker",
+  "author": "qe201020335",
+  "version": "1.0.0",
+  "description": "Track your song votes",
+  "gameVersion": "1.44.1",
+  "loadAfter": [
+    "SongPlayHistory"
+  ],
+  "dependsOn": {
+    "BSIPA": "^4.3.6",
+    "BeatSaberMarkupLanguage": "^1.12.0",
+    "SiraUtil": "^3.2.0",
+    "SongCore": "^3.16.0"
+  },
+  "links": {
+    "project-home": "https://github.com/qe201020335/SongVoteTracker"
+  }
+}
