@@ -7,6 +7,8 @@
   "description": "Track your song votes",
   "gameVersion": "1.44.1",
   "loadAfter": [
+    "BeatSaverVoting",
+    "DiTails",
     "SongPlayHistory"
   ],
   "dependsOn": {
