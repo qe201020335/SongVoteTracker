@@ -15,6 +15,7 @@ using IPALogger = IPA.Logging.Logger;
 namespace SongVoteTracker;
 
 [Plugin(RuntimeOptions.SingleStartInit)]
+[NoEnableDisable]
 internal class Plugin
 {
     internal const string HookId = "com.github.qe201020335.SongVoteTracker";
