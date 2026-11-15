@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using DiTails.UI;
+using HMUI;
 using IPA.Logging;
 using MonoMod.RuntimeDetour;
 using SongVoteTracker.Model;
@@ -16,9 +17,14 @@ internal class DiTailsVoteHook : IInitializable, IDisposable
     private readonly Logger _logger = null!;
 
     [Inject]
-    private readonly InMenuVoteTrackingHelper _voteHelper = null!;
+    private readonly IVoteTracker _voteTracker = null!;
+
+    private readonly TableView _tableView;
 
     private Hook? _hook;
+
+    public DiTailsVoteHook(LevelCollectionViewController levelCollectionViewController) =>
+        _tableView = levelCollectionViewController._levelCollectionTableView._tableView;
 
     public void Initialize()
     {
@@ -53,7 +59,8 @@ internal class DiTailsVoteHook : IInitializable, IDisposable
         {
             var vote = upvote ? VoteType.Upvote : VoteType.Downvote;
             _logger.Debug($"DiTails voted {vote} to {beatmap.levelID}");
-            _voteHelper.Vote(beatmap, vote);
+            _voteTracker.Vote(beatmap, vote);
+            _tableView.RefreshCellsContent();
         }
 
         return original(self, upvote);
