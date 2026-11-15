@@ -1,5 +1,4 @@
 <settings-container xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='https://monkeymanboy.github.io/BSML-Docs/BSMLSchema.xsd'>
-  <vertical>
-    <bool-setting text='Show Up/Downvotes' value='show-votes' hover-hint='Display like and dislike icons in the song list'/>
-  </vertical>
+  <bool-setting text='Show Up/Downvotes' value='show-votes'
+                hover-hint='Display like and dislike icons in the song list' />
 </settings-container>
