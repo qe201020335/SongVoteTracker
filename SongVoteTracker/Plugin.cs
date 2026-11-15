@@ -2,7 +2,6 @@
 using System.Linq;
 using BeatSaberMarkupLanguage.Settings;
 using BeatSaberMarkupLanguage.Util;
-using HarmonyLib;
 using Hive.Versioning;
 using IPA;
 using IPA.Config;
@@ -18,7 +17,7 @@ namespace SongVoteTracker;
 [Plugin(RuntimeOptions.SingleStartInit)]
 internal class Plugin
 {
-    private const string HarmonyId = "com.github.qe201020335.SongVoteTracker";
+    internal const string HookId = "com.github.qe201020335.SongVoteTracker";
     private const string BeatSaverVotingId = "BeatSaverVoting";
     private const string DiTailsId = "DiTails";
     private const string SongPlayHistoryId = "SongPlayHistory";
@@ -27,11 +26,11 @@ internal class Plugin
     internal static IPALogger Log { get; private set; } = null!;
     internal static PluginConfig Config { get; private set; } = null!;
 
-    private readonly Harmony _harmony = new(HarmonyId);
     private readonly SettingsMenu _settingsMenu;
 
+    internal bool ShouldApplyHooks { get; }
     internal bool BeatSaverVotingInstalled { get; }
-    internal PluginMetadata? DiTailsMetadata { get; }
+    internal bool DiTailsInstalled { get; }
     internal PluginMetadata? SongPlayHistoryMetadata { get; }
 
 
@@ -43,19 +42,16 @@ internal class Plugin
         Config = config.Generated<PluginConfig>();
 
         BeatSaverVotingInstalled = PluginManager.EnabledPlugins.Any(metadata => metadata.Id == BeatSaverVotingId);
-        DiTailsMetadata = PluginManager.GetPluginFromId(DiTailsId);
+        DiTailsInstalled = PluginManager.GetPluginFromId(DiTailsId) != null;
         SongPlayHistoryMetadata = PluginManager.GetPluginFromId(SongPlayHistoryId);
 
         _settingsMenu = new SettingsMenu();
         MainMenuAwaiter.MainMenuInitializing += OnMenuLoad;
 
-        if (SongPlayHistoryMetadata == null || SongPlayHistoryMetadata.HVersion >= new Version(2, 4, 0))
+        ShouldApplyHooks = SongPlayHistoryMetadata == null || SongPlayHistoryMetadata.HVersion >= new Version(2, 4, 0);
+        if (!ShouldApplyHooks)
         {
-            _harmony.PatchAll();
-        }
-        else
-        {
-            Log.Notice("SongPlayHistory version with vote tracker is installed, not applying patches.");
+            Log.Notice("SongPlayHistory version with vote tracker is installed, not applying hooks.");
         }
 
         zenjector.UseLogger(logger);
