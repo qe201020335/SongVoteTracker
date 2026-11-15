@@ -60,7 +60,7 @@ internal class Plugin
 
         zenjector.UseLogger();
         zenjector.Install<MenuInstaller>(Location.Menu);
-        zenjector.Install<AppInstaller>(Location.App, Config);
+        zenjector.Install<AppInstaller>(Location.App);
         
         Log.Info("Plugin initialized");
     }
