@@ -18,8 +18,7 @@ internal class BeatSaverVotingTracker : IVoteTracker
         try
         {
             _logger.Debug($"Voting for {level.songName}, {level.levelID}, {voteType}");
-            var hash = SongUtils.GetLowerCaseCustomLevelHash(level);
-            if (hash == null)
+            if (!level.TryGetLowerCaseLevelHash(out var hash))
             {
                 _logger.Debug("Not custom level");
                 return;
@@ -50,8 +49,7 @@ internal class BeatSaverVotingTracker : IVoteTracker
         try
         {
             _logger.Debug($"Getting vote data for {level.songName}, {level.levelID}");
-            var hash = SongUtils.GetLowerCaseCustomLevelHash(level);
-            if (hash == null)
+            if (!level.TryGetLowerCaseLevelHash(out var hash))
             {
                 _logger.Debug("Not custom level");
                 return false;

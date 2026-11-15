@@ -106,8 +106,7 @@ internal class InternalVoteTracker : IVoteTracker, IInitializable, IDisposable
         voteType = VoteType.Downvote;
         try
         {
-            var hash = SongUtils.GetLowerCaseCustomLevelHash(level);
-            if (hash != null && Votes?.TryGetValue(hash, out var vote) == true)
+            if (level.TryGetLowerCaseLevelHash(out var hash) && Votes?.TryGetValue(hash, out var vote) == true)
             {
                 voteType = vote.VoteType;
                 return true;
@@ -128,8 +127,7 @@ internal class InternalVoteTracker : IVoteTracker, IInitializable, IDisposable
         {
             lock (_voteWriteLock)
             {
-                var hash = SongUtils.GetLowerCaseCustomLevelHash(level);
-                if (hash != null && Votes != null)
+                if (level.TryGetLowerCaseLevelHash(out var hash) && Votes != null)
                 {
                     if (!Votes.ContainsKey(hash) || Votes[hash].VoteType != voteType)
                     {
