@@ -70,9 +70,9 @@ internal class VoteImageHook : IInitializable, IDisposable
         if (beatmapLevel == null) return;
 
         var bpmText = self._songBpmText;
-        if (bpmText != null && float.TryParse(bpmText.text, out var bpm))
+        if (bpmText != null)
         {
-            bpmText.text = bpm.ToString("0");
+            bpmText.text = beatmapLevel.beatsPerMinute.ToString("0");
         }
 
         Image? voteIcon = null;
