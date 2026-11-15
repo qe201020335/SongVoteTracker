@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using IPA.Logging;
 using IPA.Utilities;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using SongVoteTracker.Model;
 using SongVoteTracker.Utilities;
@@ -12,25 +13,24 @@ using Zenject;
 
 namespace SongVoteTracker.VoteTracker;
 
-internal class InternalVoteTracker : IVoteTracker, IInitializable, IDisposable
+internal class InternalVoteTracker : IVoteTracker, IDisposable
 {
     private static readonly string VoteFile = Path.Combine(UnityGame.UserDataPath, "votedSongs.json");
-
-    private static Dictionary<string, UserVote>? Votes { get; set; } = new();
-
-    private static readonly object _voteWriteLock = new();
 
     [Inject]
     private readonly Logger _logger = null!;
 
+    private readonly Dictionary<string, UserVote> _votes = new();
+
     private bool _readonly = true;
 
-    // private DateTime _voteLastWritten;
-
-    public void Initialize()
+    [Inject]
+    [UsedImplicitly]
+    private void Init()
     {
         _logger.Info("Loading votes.");
-        _readonly = true;
+
+        _votes.Clear();
 
         if (!File.Exists(VoteFile))
         {
@@ -42,8 +42,19 @@ internal class InternalVoteTracker : IVoteTracker, IInitializable, IDisposable
         try
         {
             var text = File.ReadAllText(VoteFile, Encoding.UTF8);
-            Votes = JsonConvert.DeserializeObject<Dictionary<string, UserVote>?>(text) ??
-                    new Dictionary<string, UserVote>();
+            var votes = JsonConvert.DeserializeObject<Dictionary<string, UserVote>>(text);
+            if (votes == null || votes.Count == 0)
+            {
+                _logger.Warn("votedSongs.json is empty or invalid. Entering readonly mode.");
+                _readonly = true;
+                return;
+            }
+
+            foreach (var userVote in votes)
+            {
+                _votes[userVote.Key] = userVote.Value;
+            }
+
             _logger.Info("votedSongs.json Loaded");
         }
         catch (Exception ex) // IOException, JsonException
@@ -51,6 +62,7 @@ internal class InternalVoteTracker : IVoteTracker, IInitializable, IDisposable
             _readonly = true;
             _logger.Error("Failed to load votedSongs.json. Entering readonly mode.");
             _logger.Error(ex);
+            return;
         }
 
         try
@@ -77,11 +89,11 @@ internal class InternalVoteTracker : IVoteTracker, IInitializable, IDisposable
 
         try
         {
-            lock (_voteWriteLock)
+            lock (_votes)
             {
-                if (Votes != null && Votes.Count > 0)
+                if (_votes.Count > 0)
                 {
-                    File.WriteAllText(VoteFile, JsonConvert.SerializeObject(Votes), Encoding.UTF8);
+                    File.WriteAllText(VoteFile, JsonConvert.SerializeObject(_votes), Encoding.UTF8);
                 }
             }
         }
@@ -94,11 +106,7 @@ internal class InternalVoteTracker : IVoteTracker, IInitializable, IDisposable
 
     public void Dispose()
     {
-        lock (_voteWriteLock)
-        {
-            SaveVotes();
-            Votes = null;
-        }
+        SaveVotes();
     }
 
     public bool TryGetVote(BeatmapLevel level, out VoteType voteType)
@@ -106,7 +114,7 @@ internal class InternalVoteTracker : IVoteTracker, IInitializable, IDisposable
         voteType = VoteType.Downvote;
         try
         {
-            if (level.TryGetLowerCaseLevelHash(out var hash) && Votes?.TryGetValue(hash, out var vote) == true)
+            if (level.TryGetLowerCaseLevelHash(out var hash) && _votes.TryGetValue(hash, out var vote))
             {
                 voteType = vote.VoteType;
                 return true;
@@ -123,25 +131,28 @@ internal class InternalVoteTracker : IVoteTracker, IInitializable, IDisposable
 
     public void Vote(BeatmapLevel level, VoteType voteType)
     {
-        Task.Run(() =>
+        if (!level.TryGetLowerCaseLevelHash(out var hash))
         {
-            lock (_voteWriteLock)
-            {
-                if (level.TryGetLowerCaseLevelHash(out var hash) && Votes != null)
-                {
-                    if (!Votes.ContainsKey(hash) || Votes[hash].VoteType != voteType)
-                    {
-                        Votes[hash] = new UserVote
-                        {
-                            Hash = hash,
-                            VoteType = voteType
-                        };
-                        SaveVotes();
-                    }
+            return;
+        }
 
-                    Plugin.Log.Info($"Voted {voteType} to {level.levelID}");
-                }
+        lock (_votes)
+        {
+            if (_votes.TryGetValue(hash, out var existing) && existing.VoteType == voteType)
+            {
+                return;
             }
-        });
+
+            _votes[hash] = new UserVote
+            {
+                Hash = hash,
+                VoteType = voteType
+            };
+        }
+
+        // don't block the main thread on writing to disk
+        Task.Run(SaveVotes);
+
+        _logger.Info($"Voted {voteType} to {level.levelID}");
     }
 }
