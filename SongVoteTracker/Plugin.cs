@@ -58,7 +58,7 @@ internal class Plugin
             Log.Notice("SongPlayHistory version with vote tracker is installed, not applying patches.");
         }
 
-        zenjector.UseLogger();
+        zenjector.UseLogger(logger);
         zenjector.Install<MenuInstaller>(Location.Menu);
         zenjector.Install<AppInstaller>(Location.App);
         
