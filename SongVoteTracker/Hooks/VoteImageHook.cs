@@ -66,7 +66,6 @@ internal class VoteImageHook : IInitializable, IDisposable
     {
         original(self, beatmapLevel, isFavorite, isPromoted, isUpdated, interactable);
 
-        if (!Plugin.Config.ShowVotes) return;
         if (beatmapLevel == null) return;
 
         var bpmText = self._songBpmText;

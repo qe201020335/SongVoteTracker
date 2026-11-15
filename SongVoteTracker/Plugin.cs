@@ -65,7 +65,7 @@ internal class Plugin
                     container.BindInterfacesTo<DiTailsVoteHook>().AsSingle();
                 }
 
-                if (!bsvInstalled) // let BeatSaverVoting show its own icons
+                if (Config.ShowVotes && !bsvInstalled) // let BeatSaverVoting show its own icons
                 {
                     container.BindInterfacesTo<VoteImageHook>().AsSingle();
                 }
