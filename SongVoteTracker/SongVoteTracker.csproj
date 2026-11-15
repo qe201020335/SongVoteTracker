@@ -37,72 +37,58 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="BeatmapCore">
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="BeatSaber.ViewSystem">
-      <Private>false</Private>
-    </Reference>
+    <Reference Include="BeatmapCore" />
+    <Reference Include="BeatSaber.ViewSystem" />
     <Reference Include="BeatSaverVoting">
       <HintPath>$(BeatSaberDir)\Plugins\BeatSaverVoting.dll</HintPath>
-      <Private>false</Private>
+      <Private>False</Private>
       <Publicize>true</Publicize>
     </Reference>
     <Reference Include="BSML">
       <HintPath>$(BeatSaberDir)\Plugins\BSML.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="DataModels">
-      <Private>false</Private>
-    </Reference>
+    <Reference Include="DataModels" />
     <Reference Include="DiTails">
       <HintPath>$(BeatSaberDir)\Plugins\DiTails.dll</HintPath>
-      <Private>false</Private>
+      <Private>False</Private>
       <Publicize>true</Publicize>
     </Reference>
     <Reference Include="Hive.Versioning">
       <HintPath>$(BeatSaberDir)\Libs\Hive.Versioning.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="HMUI">
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Interactable">
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="IPA.Loader">
-      <Private>false</Private>
-    </Reference>
+    <Reference Include="HMUI" />
+    <Reference Include="Interactable" />
+    <Reference Include="IPA.Loader" />
     <Reference Include="Main">
       <Publicize>true</Publicize>
     </Reference>
     <Reference Include="MonoMod.RuntimeDetour">
       <HintPath>$(BeatSaberDir)\Libs\MonoMod.RuntimeDetour.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="netstandard" />
     <Reference Include="Newtonsoft.Json" />
     <Reference Include="SiraUtil">
       <HintPath>$(BeatSaberDir)\Plugins\SiraUtil.dll</HintPath>
-      <Private>false</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="SongCore">
       <HintPath>$(BeatSaberDir)\Plugins\SongCore.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="Unity.TextMeshPro" />
     <Reference Include="UnityEngine" />
     <Reference Include="UnityEngine.CoreModule" />
-    <Reference Include="UnityEngine.ImageConversionModule">
-      <Private>false</Private>
-    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule" />
     <Reference Include="UnityEngine.UI" />
     <Reference Include="UnityEngine.UIElementsModule" />
     <Reference Include="UnityEngine.UIModule" />
-    <Reference Include="Zenject">
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Zenject-usage">
-      <Private>false</Private>
-    </Reference>
+    <Reference Include="Zenject" />
+    <Reference Include="Zenject-usage" />
   </ItemGroup>
 
 </Project>
