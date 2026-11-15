@@ -59,7 +59,7 @@ internal class DiTailsVoteHook : IInitializable, IDisposable
         {
             var vote = upvote ? VoteType.Upvote : VoteType.Downvote;
             _logger.Debug($"DiTails voted {vote} to {beatmap.levelID}");
-            _voteTracker.Vote(beatmap, vote);
+            _voteTracker.AddVote(beatmap, vote);
             _tableView.RefreshCellsContent();
         }
 

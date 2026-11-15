@@ -13,7 +13,7 @@ internal class BeatSaverVotingTracker : IVoteTracker
     [Inject]
     private readonly Logger _logger = null!;
 
-    public void Vote(BeatmapLevel level, VoteType voteType)
+    public void AddVote(BeatmapLevel level, VoteType voteType)
     {
         try
         {

@@ -129,7 +129,7 @@ internal class InternalVoteTracker : IVoteTracker, IDisposable
         return false;
     }
 
-    public void Vote(BeatmapLevel level, VoteType voteType)
+    public void AddVote(BeatmapLevel level, VoteType voteType)
     {
         if (!level.TryGetLowerCaseLevelHash(out var hash))
         {
