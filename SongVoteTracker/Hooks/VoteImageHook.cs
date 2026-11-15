@@ -75,17 +75,7 @@ internal class VoteImageHook : IInitializable, IDisposable
             bpmText.text = beatmapLevel.beatsPerMinute.ToString("0");
         }
 
-        Image? voteIcon = null;
-        foreach (var image in self.GetComponentsInChildren<Image>())
-        {
-            // For performance reason, avoid using Linq.
-            if (image.name == "Vote")
-            {
-                voteIcon = image;
-                break;
-            }
-        }
-
+        var voteIcon = self.transform.Find("Vote")?.GetComponent<Image>();
         if (voteIcon == null)
         {
             voteIcon = Instantiate(self._favoritesBadgeImage, self.transform);
