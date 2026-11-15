@@ -21,3 +21,6 @@ Track all your song votes.
 ## For Modders
 - To access the vote data, use `Zenject` and inject `IVoteTracker`.
 - `IVoteTracker` is installed to `SiraUtil`'s `Location.App`.
+
+## Credits
+- [swift-kim](https://github.com/swift-kim) for the original implementation of vote visualization in SongPlayHistory.
