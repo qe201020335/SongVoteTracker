@@ -8,7 +8,6 @@ Track all your song votes.
 > For information on the Vote API, see [For Modders](#for-modders).
 
 ## Features
-- Track your votes (👍/👎) for all songs
 - Sync your votes from DiTails with BeatSaverVoting 
 - Visualize your song preferences (👍/👎) (if you don't have BeatSaverVoting installed)
 
