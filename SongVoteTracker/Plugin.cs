@@ -65,22 +65,4 @@ internal class Plugin
     {
         BSMLSettings.Instance.AddSettingsMenu("Vote Tracker", "SongVoteTracker.Menu.settings.bsml", _settingsMenu);
     }
-
-    [OnStart]
-    public void OnApplicationStart()
-    {
-        Log.Debug("OnApplicationStart");
-    }
-
-    [OnExit]
-    public void OnApplicationQuit()
-    {
-        Log.Debug("OnApplicationQuit");
-    }
-
-    [Conditional("DEBUG")]
-    internal static void DebugLog(string message)
-    {
-        Log.Debug(message);
-    }
 }
